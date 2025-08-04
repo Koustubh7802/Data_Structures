@@ -25,18 +25,56 @@ struct Node * insert(struct Node * root, int value){
 }
 
 //Preorder Traversal
-void display(struct Node * root){
+void inorder(struct Node * root){
     
     if(root==NULL){
         return;
     }
 
+    inorder(root->left);
     printf("%d ",root->data);
-    display(root->left);
-    display(root->right);
+    inorder(root->right);
     
 }
 
+void delete(struct Node * root, int value){
+    int x;
+    
+    if(root==NULL){
+        printf("Empty BST!");
+        return;
+    }
+
+    if(root->data == value){
+
+        if(root->left==NULL && root->right==NULL){
+            printf("Node deleted with value = %d",value);
+            free(root);
+            return;
+        }
+
+        else if(root->left==NULL && root->right!=NULL){
+            root = root->right;
+            printf("Node deleted with value = %d",value);
+            return;
+        }
+
+        else if(root->left!=NULL && root->right==NULL){
+            root = root->left;
+            printf("Node deleted with value = %d",value);
+            return;
+        }
+
+        else{
+            root->data = x;
+            printf("Node deleted with value = %d",value);
+        }
+
+    }
+    delete(root->left,value);
+    delete(root->right,value);
+    x = root->data;
+}
 
 int main(){
     struct Node * root = NULL;
@@ -44,7 +82,11 @@ int main(){
     for(int i=1; i<=10; i++){
         root = insert(root,i);
     }
-    display(root);
+    inorder(root);
+
+    delete(root,5);
+    printf("\nTree after deletion :\n");
+    inorder(root);
     
     return 0;
 }
